@@ -5,4 +5,4 @@ nohup nginx > /dev/null &
 nohup filebrowser -d /opt/filebrowser/filebrowser.db -a 127.0.0.1 -p 8081 -b /filebrowser -r / --noauth > /dev/null &
 nohup ttyd --port 8082 --base-path /ttyd /usr/bin/bash > /dev/null &
 
-devpi-server --host=0.0.0.0
+devpi-server --serverdir /opt/devpi-server --host=0.0.0.0 
