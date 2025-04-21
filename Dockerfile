@@ -34,5 +34,6 @@ RUN . /opt/venv/bin/activate \
 
 copy ./docker-entrypoint.sh /
 run chmod +x /docker-entrypoint.sh
+volume /opt/devpi-server
 cmd []
 entrypoint ["/docker-entrypoint.sh"]
