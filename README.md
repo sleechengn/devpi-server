@@ -17,24 +17,24 @@ devpi-server --serverdir /opt/devs --host=0.0.0.0
 devpi use http://192.168.13.86:3141
 devpi login root
 #输入密码，root
-devpi index root/pypi mirror_url="https://download.pytorch.org/whl/cu126"
 ```
 查看
 ```
+devpi index -l
 devpi index root/pypi
 ```
-创建
+创建一个index
 ```
 #创建普通的index
 devpi index -c root/cu126
 ```
-#注意以上创建的不是mirror
-
-#创建mirror的
+#创建cu126安装pytorch
 ```
+#创建mirror的
 #cuda 12.6 torch
 devpi index -c root/cu126 type=mirror mirror_url="https://download.pytorch.org/whl/cu126" volatile=False
 ```
+#创建cu124
 ```
 #cuda 12.4 torch
 devpi index -c root/cu124 type=mirror mirror_url="https://download.pytorch.org/whl/cu124" volatile=False
