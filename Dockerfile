@@ -1,6 +1,6 @@
 from ubuntu:jammy
 
-#APT-TS
+#APT_CN_UBUNTU_JAMMY
 
 run apt update \
 	&& apt install -y curl aria2 nginx ttyd \
