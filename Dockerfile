@@ -1,9 +1,7 @@
-from ubuntu:jammy
-
-#APT_CN_UBUNTU_JAMMY
+from debian:trixie
 
 run apt update \
-	&& apt install -y curl aria2 nginx tmux lrzsz \
+	&& apt install -y curl aria2 nginx tmux lrzsz fish \
 	&& apt clean
 
 # ttyd

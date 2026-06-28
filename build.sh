@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 IMAGE_TAG=$1
 echo build [$(dirname $0)]  Dockerfile
 if [ $IMAGE_TAG ]; then
