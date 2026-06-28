@@ -1,0 +1,46 @@
+networks:
+  lan13:
+    name: lan13
+    driver: macvlan
+    driver_opts:
+      parent: eth1
+    ipam:
+      config:
+        - subnet: "192.168.13.0/24"
+          gateway: "192.168.13.254"
+  devpi-server-network:
+services:
+  devpi-server:
+    container_name: "devpi-server"
+    hostname: "devpi-server"
+    image: "192.168.13.73:5000/sleechengn/devpi-server:latest"
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+      - HF_ENDPOINT=https://hf-mirror.com
+      - PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple
+      - PIP_EXTRA_INDEX_URL=https://download.pytorch.org/whl/cu126
+      - LC_ALL=zh_CN.UTF-8
+    volumes:
+      - "/mnt/rfs:/mnt/rfs"
+      - "devpi-server:/opt/devpi-server"
+      - "devpi-server-data:/opt/devpi-server/+files"
+    networks:
+      lan13:
+        ipv4_address: 192.168.13.86
+      devpi-server-network:
+volumes:
+  devpi-server-data:
+    name: devpi-server-data
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ./volumes/devpi-server/+files
+  devpi-server:
+    name: devpi-server
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ./volumes/devpi-server/@

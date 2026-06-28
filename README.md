@@ -18,56 +18,68 @@ devpi use http://192.168.13.86:3141
 devpi login root
 #输入密码，root
 ```
+
 查看
 ```
 devpi index -l
 devpi index root/pypi
 ```
+
 创建一个index
 ```
 #创建普通的index
 devpi index -c root/cu126
 ```
+
 #创建cu126安装pytorch
 ```
 #创建mirror的
 #cuda 12.6 torch
 devpi index -c root/cu126 type=mirror mirror_url="https://download.pytorch.org/whl/cu126" volatile=False
 ```
+
 #创建cu124
 ```
 #cuda 12.4 torch
 devpi index -c root/cu124 type=mirror mirror_url="https://download.pytorch.org/whl/cu124" volatile=False
 ```
+
 编辑已经存在的
 ```
 devpi index root/cu126 volatile=False
 ```
+
 删除
 ```
 devpi index --delete root/cu126
 ```
+
 #设置易变删除
 ```
 devpi index root/tspi volatile=True
 devpi index --delete root/tspi
 ```
+
 pip客户端安装包
+```
 uv pip install torch --index-url http://192.168.13.86:3141/root/pypi --extra-index-url http://192.168.13.86:3141/root/cu126 --allow-insecure-host=192.168.13.86
 pip install torch --index-url http://192.168.13.86:3141/root/pypi --extra-index-url http://192.168.13.86:3141/root/cu126 --trusted-host=192.168.13.86 --force
 uv pip install cowsay --index-url http://192.168.13.86:3141/root/pypi --extra-index-url http://192.168.13.86:3141/root/cu126 --allow-insecure-host=192.168.13.86
+```
 
 docker compose
 ```
 networks:
-  name: lan13
+  lan13:
+    name: lan13
     driver: macvlan
     driver_opts:
       parent: eth1
     ipam:
       config:
         - subnet: "192.168.13.0/24"
-          gateway: "192.168.13.1"
+          gateway: "192.168.13.254"
+  devpi-server-network:
 services:
   devpi-server:
     container_name: "devpi-server"
@@ -82,10 +94,12 @@ services:
       - LC_ALL=zh_CN.UTF-8
     volumes:
       - "/mnt/rfs:/mnt/rfs"
-      - "devpi-server-data:/opt/devpi-server"
+      - "devpi-server:/opt/devpi-server"
+      - "devpi-server-data:/opt/devpi-server/+files"
     networks:
       lan13:
         ipv4_address: 192.168.13.86
+      devpi-server-network:
 volumes:
   devpi-server-data:
     name: devpi-server-data
@@ -93,5 +107,12 @@ volumes:
     driver_opts:
       o: bind
       type: none
-      device: ./data/devpi-server
+      device: ./volumes/devpi-server/+files
+  devpi-server:
+    name: devpi-server
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ./volumes/devpi-server/@
 ```
