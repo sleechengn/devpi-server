@@ -22,9 +22,6 @@ run mkdir /opt/filebrowser \
         && rm -rf linux-amd64-filebrowser.tar.gz \                                                                                                                                                                                                                     
         && ln -s $(pwd)/filebrowser /usr/bin/filebrowser
 
-run rm -rf /etc/nginx/sites-enabled/default
-add ./NGINX /etc/nginx/sites-enabled/
-
 run set -e \
 	&& mkdir /opt/uv \
 	&& cd /opt/uv \
@@ -57,6 +54,8 @@ run set -e \
 RUN . /opt/venv/bin/activate \
 	&& devpi-init --serverdir /opt/devpi-server --root-passwd root
 
+run rm -rf /etc/nginx/sites-enabled/default
+add ./NGINX /etc/nginx/sites-enabled/
 copy ./docker-entrypoint.sh /
 run chmod +x /docker-entrypoint.sh
 volume /opt/devpi-server
