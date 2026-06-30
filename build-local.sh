@@ -19,3 +19,4 @@ sed -i '/# RUN LINE/i\run apt update' Dockerfile
 
 docker --debug build . -f Dockerfile -t 192.168.13.73:5000/sleechengn/devpi-server:latest
 docker push 192.168.13.73:5000/sleechengn/devpi-server:latest
+docker --debug build . -f Dockerfile -t sleechengn/devpi-server:latest
